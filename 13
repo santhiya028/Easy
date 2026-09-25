@@ -1,0 +1,37 @@
+int* decrypt(int* code, int codeSize, int k, int* returnSize){
+    int* result=malloc(codeSize*sizeof(int));
+    int n1,sum;
+    if (k>0){
+        for (int i=0;i<codeSize;i++){           // To cover all elements in code array
+            for (int j=1;j<=k;j++){             // Cover elements till k
+                n1=code[(i+j)%codeSize];        // As it is a circular array, modulo by size of code array will give the desired result.
+                                                // I recommend to DRY-RUN this line for Example in description to understand the working.
+                sum+=n1;
+            }
+            result[i]=sum;
+            n1=0;                               // Initialize n1 and sum to zero for next iteration.
+            sum=0;
+        }
+    }
+    
+    // For k=0
+    else if(k==0){
+        for (int i=0;i<codeSize;i++)
+            result[i]=0;                        // For k=0, simply initalize all elements in code array with 0
+    }
+    
+    // For k<0
+    else{
+        for (int i=0;i<codeSize;i++){
+            for (int j=1;j<=abs(k);j++){
+                n1=code[(i+codeSize-j)%codeSize];       // Logic for negative k's is almost same as of above. DRY-RUN this line of code for better understanding
+                sum+=n1;
+            }
+            result[i]=sum;
+            n1=0;
+            sum=0;
+        }   
+    }
+    *returnSize=codeSize;
+    return result;              // Return the resultant array
+}
