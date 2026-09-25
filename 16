@@ -1,0 +1,36 @@
+#define VALID_LEN 3
+
+int countGoodSubstrings(char* s) {
+    int len = strlen(s);
+    if (len < VALID_LEN) return 0;
+
+    int left = 0, right = 0, c;
+    int count = 0;
+    int map[26] = {0};
+
+    while (right < len) {
+        c = s[right] - 'a';
+        map[c] += 1;
+
+        while (right - left + 1 == VALID_LEN) {
+            bool found = true;
+            for (int i = 0; i < 26; ++i) {
+                if (map[i] > 1) {
+                    found = false;
+                    break;
+                }
+            }
+
+            if (found) {
+                ++count;
+            }
+            
+            c = s[left] - 'a';
+            --map[c];
+            ++left;
+        }
+        ++right;
+    }
+
+    return count;
+}
